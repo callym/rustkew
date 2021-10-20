@@ -43,7 +43,7 @@ impl Powo {
     get(Self::URL, "search", params).await
   }
 
-  pub async fn lookup(id: String, include: Option<Vec<String>>) -> Result<PowoResult, Error> {
+  pub async fn lookup(id: String, include: Option<Vec<String>>) -> Result<PowoLookup, Error> {
     let params = if let Some(include) = include {
       vec![("fields".into(), include.join(","))]
     } else {
@@ -66,10 +66,145 @@ pub struct DistributionMap {
 }
 
 #[derive(Deserialize)]
+pub struct Image {
+  pub thumbnail: String,
+  pub fullsize: String,
+  pub caption: String,
+}
+
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct Synonym {
+  #[serde(rename = "fqId")]
+  pub fq_id: String,
+  pub url: String,
+  pub name: String,
+  pub accepted: bool,
+  pub author: Option<String>,
+  pub kingdom: Option<String>,
+}
+
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
 pub struct PowoResult {
+  pub accepted: bool,
+  pub author: Option<String>,
+  pub kingdom: String,
+  pub family: String,
+  pub name: String,
+  pub rank: String,
+  pub snippet: Option<String>,
+  #[serde(rename = "synonymOf")]
+  pub synonym_of: Option<Synonym>,
+  pub url: String,
+  #[serde(rename = "fqId")]
+  pub fq_id: String,
+
+  #[serde(default)]
+  pub images: Vec<Image>,
+}
+
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct Taxon {
   #[serde(rename = "fqId")]
   pub fq_id: String,
   pub name: String,
+  pub author: String,
+  pub rank: String,
+  #[serde(rename = "taxonomicStatus")]
+  pub taxonomic_status: String,
+}
+
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct Description {
+  pub description: String,
+  pub source: Option<String>,
+}
+
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct Descriptions {
+  #[serde(rename = "asTaxon")]
+  pub as_taxon: String,
+  pub source: String,
+  #[serde(rename = "fromSynonym")]
+  pub from_synonym: bool,
+  pub descriptions: HashMap<String, Vec<Description>>,
+}
+
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct DistributionEnvelopeEntry {
+  #[serde(deserialize_with = "json_float")]
+  pub x: f64,
+  #[serde(deserialize_with = "json_float")]
+  pub y: f64,
+  #[serde(deserialize_with = "json_float")]
+  pub z: f64,
+}
+
+fn json_float<'de, D>(de: D) -> Result<f64, D::Error>
+where
+  D: serde::Deserializer<'de>,
+{
+  let f = match f64::deserialize(de) {
+    Ok(f) => f,
+    Err(e) => {
+      if e
+        .to_string()
+        .starts_with(r#"invalid type: string "NaN", expected f64"#)
+      {
+        f64::NAN
+      } else {
+        Err(e)?
+      }
+    },
+  };
+
+  Ok(f)
+}
+
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct PowoLookup {
+  pub modified: String,
+  #[serde(rename = "bibliographicCitation")]
+  pub bibliographic_citation: String,
+  pub genus: String,
+  #[serde(rename = "taxonomicStatus")]
+  pub taxonomic_status: String,
+  pub kingdom: String,
+  pub phylum: String,
+  pub family: String,
+  #[serde(rename = "nomenclaturalCode")]
+  pub nomenclatural_code: String,
+  pub source: String,
+  #[serde(rename = "namePublishedInYear")]
+  pub name_published_in_year: u32,
+  #[serde(rename = "taxonRemarks")]
+  pub taxon_remarks: String,
+  #[serde(rename = "nomenclaturalStatus")]
+  pub nomenclatural_status: String,
+  pub synonym: bool,
+  pub plantae: bool,
+  pub fungi: bool,
+  #[serde(rename = "fqId")]
+  pub fq_id: String,
+  pub name: String,
+  pub authors: String,
+  pub species: String,
+  pub rank: String,
+  pub reference: String,
+
+  pub classification: Vec<Taxon>,
+  #[serde(rename = "basionymOf")]
+  pub basionym_of: Vec<Taxon>,
+  pub synonyms: Vec<Taxon>,
+
   pub distribution: Option<DistributionMap>,
-  pub descriptions: Option<serde_json::Value>,
+  #[serde(rename = "distributionEnvelope")]
+  pub distribution_envelope: Option<Vec<DistributionEnvelopeEntry>>,
+  pub descriptions: Option<HashMap<String, Descriptions>>,
 }
