@@ -1,13 +1,18 @@
+use std::str::FromStr;
+
+use urn::Urn;
+
 use super::{filters::Filters, terms, Powo};
 use crate::Api;
 
 #[async_std::test]
 async fn basic_search() {
   let res = Powo::search("Poa Annua".into()).await.unwrap();
+  let urn = Urn::from_str("urn:lsid:ipni.org:names:320035-2").unwrap();
 
   assert_eq!(res.size(), 3);
 
-  assert_eq!(res.results()[0].fq_id, "urn:lsid:ipni.org:names:320035-2");
+  assert_eq!(res.results()[0].fq_id, urn);
 }
 
 #[async_std::test]
@@ -18,10 +23,11 @@ async fn advanced_name_search() {
     .query(terms::Name::Author, "L.");
 
   let res = query.run().await.unwrap();
+  let urn = Urn::from_str("urn:lsid:ipni.org:names:320035-2").unwrap();
 
   assert_eq!(res.size(), 1);
 
-  assert_eq!(res.results()[0].fq_id, "urn:lsid:ipni.org:names:320035-2");
+  assert_eq!(res.results()[0].fq_id, urn);
 }
 
 #[async_std::test]
@@ -49,9 +55,12 @@ async fn advanced_geography_search() {
 
 #[async_std::test]
 async fn lookup() {
-  let res = Powo::lookup("urn:lsid:ipni.org:names:320035-2".into(), None)
-    .await
-    .unwrap();
+  let res = Powo::lookup(
+    Urn::from_str("urn:lsid:ipni.org:names:320035-2").unwrap(),
+    None,
+  )
+  .await
+  .unwrap();
 
   assert_eq!(res.name, "Poa annua");
 }
@@ -59,7 +68,7 @@ async fn lookup() {
 #[async_std::test]
 async fn lookup_with_extra_fields() {
   let res = Powo::lookup(
-    "urn:lsid:ipni.org:names:320035-2".into(),
+    Urn::from_str("urn:lsid:ipni.org:names:320035-2").unwrap(),
     Some(vec!["distribution".into(), "descriptions".into()]),
   )
   .await

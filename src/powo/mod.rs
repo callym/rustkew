@@ -2,6 +2,7 @@ use std::collections::HashMap;
 
 use serde::Deserialize;
 use surf::Error;
+use urn::Urn;
 
 use crate::{
   core::{build_params, get, SearchQuery},
@@ -43,7 +44,7 @@ impl Powo {
     get(Self::URL, "search", params).await
   }
 
-  pub async fn lookup(id: String, include: Option<Vec<String>>) -> Result<PowoLookup, Error> {
+  pub async fn lookup(id: Urn, include: Option<Vec<String>>) -> Result<PowoLookup, Error> {
     let params = if let Some(include) = include {
       vec![("fields".into(), include.join(","))]
     } else {
@@ -76,7 +77,7 @@ pub struct Image {
 #[serde(deny_unknown_fields)]
 pub struct Synonym {
   #[serde(rename = "fqId")]
-  pub fq_id: String,
+  pub fq_id: Urn,
   pub url: String,
   pub name: String,
   pub accepted: bool,
@@ -98,7 +99,7 @@ pub struct PowoResult {
   pub synonym_of: Option<Synonym>,
   pub url: String,
   #[serde(rename = "fqId")]
-  pub fq_id: String,
+  pub fq_id: Urn,
 
   #[serde(default)]
   pub images: Vec<Image>,
@@ -108,7 +109,7 @@ pub struct PowoResult {
 #[serde(deny_unknown_fields)]
 pub struct Taxon {
   #[serde(rename = "fqId")]
-  pub fq_id: String,
+  pub fq_id: Urn,
   pub name: String,
   pub author: String,
   pub rank: String,
@@ -191,7 +192,7 @@ pub struct PowoLookup {
   pub plantae: bool,
   pub fungi: bool,
   #[serde(rename = "fqId")]
-  pub fq_id: String,
+  pub fq_id: Urn,
   pub name: String,
   pub authors: String,
   pub species: String,
