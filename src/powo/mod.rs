@@ -19,7 +19,7 @@ use self::filters::Filters;
 #[cfg(test)]
 mod test;
 
-#[derive(Clone)]
+#[derive(Debug, Clone)]
 pub struct Powo {
   query: Option<HashMap<PowoQuery, String>>,
   filters: Option<Vec<Filters>>,
@@ -55,25 +55,25 @@ impl Powo {
   }
 }
 
-#[derive(Deserialize)]
+#[derive(Debug, Deserialize)]
 pub struct Distribution {
   pub name: String,
 }
 
-#[derive(Deserialize)]
+#[derive(Debug, Deserialize)]
 pub struct DistributionMap {
   pub natives: Vec<Distribution>,
   pub introduced: Vec<Distribution>,
 }
 
-#[derive(Deserialize)]
+#[derive(Debug, Deserialize)]
 pub struct Image {
   pub thumbnail: String,
   pub fullsize: String,
   pub caption: String,
 }
 
-#[derive(Deserialize)]
+#[derive(Debug, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Synonym {
   #[serde(rename = "fqId")]
@@ -85,7 +85,7 @@ pub struct Synonym {
   pub kingdom: Option<String>,
 }
 
-#[derive(Deserialize)]
+#[derive(Debug, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct PowoResult {
   pub accepted: bool,
@@ -105,7 +105,7 @@ pub struct PowoResult {
   pub images: Vec<Image>,
 }
 
-#[derive(Deserialize)]
+#[derive(Debug, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Taxon {
   #[serde(rename = "fqId")]
@@ -117,14 +117,14 @@ pub struct Taxon {
   pub taxonomic_status: String,
 }
 
-#[derive(Deserialize)]
+#[derive(Debug, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Description {
   pub description: String,
   pub source: Option<String>,
 }
 
-#[derive(Deserialize)]
+#[derive(Debug, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Descriptions {
   #[serde(rename = "asTaxon")]
@@ -135,7 +135,7 @@ pub struct Descriptions {
   pub descriptions: HashMap<String, Vec<Description>>,
 }
 
-#[derive(Deserialize)]
+#[derive(Debug, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct DistributionEnvelopeEntry {
   #[serde(deserialize_with = "json_float")]
@@ -167,7 +167,7 @@ where
   Ok(f)
 }
 
-#[derive(Deserialize)]
+#[derive(Debug, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct PowoLookup {
   pub modified: String,

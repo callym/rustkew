@@ -18,7 +18,7 @@ use self::filters::Filters;
 #[cfg(test)]
 mod test;
 
-#[derive(Clone)]
+#[derive(Debug, Clone)]
 pub struct Ipni {
   query: Option<HashMap<IpniQuery, String>>,
   filters: Option<Vec<Filters>>,
@@ -56,27 +56,27 @@ impl Ipni {
   }
 }
 
-#[derive(Deserialize)]
+#[derive(Debug, Deserialize)]
 pub struct Citation {
   pub name: String,
   pub id: String,
 }
 
-#[derive(Deserialize)]
+#[derive(Debug, Deserialize)]
 pub struct Author {
   pub id: String,
   #[serde(rename = "standardForm")]
   pub standard_form: String,
 }
 
-#[derive(Deserialize)]
+#[derive(Debug, Deserialize)]
 #[serde(tag = "recordType")]
 pub struct Publication {
   pub id: String,
   pub title: String,
 }
 
-#[derive(Deserialize)]
+#[derive(Debug, Deserialize)]
 #[serde(tag = "recordType")]
 pub enum IpniResult {
   #[serde(rename = "citation")]

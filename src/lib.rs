@@ -79,7 +79,7 @@ pub trait Api {
   async fn run(&self) -> Result<SearchResponse<Self::Ok>, Error>;
 }
 
-#[derive(Deserialize)]
+#[derive(Debug, Deserialize)]
 pub struct SearchResponse<R> {
   #[serde(rename = "totalResults")]
   total_results: Option<i32>,

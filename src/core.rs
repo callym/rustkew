@@ -34,8 +34,6 @@ pub(crate) async fn get<R: DeserializeOwned>(
   let url = format!("{}/{}", base_url, method.into());
   let url = surf::Url::parse_with_params(&url, params)?;
 
-  dbg!(url.to_string());
-
   let mut res = loop {
     match surf::get(&url).await {
       Ok(res) => break res,
