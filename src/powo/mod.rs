@@ -208,4 +208,6 @@ pub struct PowoLookup {
   #[serde(rename = "distributionEnvelope")]
   pub distribution_envelope: Option<Vec<DistributionEnvelopeEntry>>,
   pub descriptions: Option<HashMap<String, Descriptions>>,
+
+  pub locations: Option<Vec<String>>,
 }
