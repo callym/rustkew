@@ -10,10 +10,14 @@ use crate::{
 };
 
 mod filters;
+mod suggest;
 mod terms;
 pub use terms::{IpniQuery, Name};
 
-use self::filters::Filters;
+use self::{
+  filters::Filters,
+  suggest::{suggest, SuggestResult},
+};
 
 #[cfg(test)]
 mod test;
@@ -53,6 +57,10 @@ impl Ipni {
 
   pub async fn lookup_author(id: String) -> Result<Author, Error> {
     get(Self::URL, format!("a/{}", id), [].into_iter()).await
+  }
+
+  pub async fn suggest(query: String) -> Result<SuggestResult, Error> {
+    suggest(query).await
   }
 }
 

@@ -168,3 +168,10 @@ async fn filter_by_infraspecific() {
 
   assert!(filtered.size() < unfiltered.size());
 }
+
+#[async_std::test]
+async fn suggest() {
+  let res = Ipni::suggest("Poa ann".into()).await.unwrap();
+
+  assert_eq!(res.suggested_terms.scientific_name[0], "Poa annua");
+}
