@@ -4,6 +4,8 @@ use serde::Deserialize;
 use surf::Error;
 use urn::Urn;
 
+pub type Id = Urn;
+
 use crate::{
   core::{build_params, get, SearchQuery},
   Api,
