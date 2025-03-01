@@ -13,9 +13,9 @@ pub enum PowoQuery {
   Name(Name),
 }
 
-impl Into<&'static str> for PowoQuery {
-  fn into(self) -> &'static str {
-    match self {
+impl From<PowoQuery> for &'static str {
+  fn from(val: PowoQuery) -> Self {
+    match val {
       PowoQuery::Characteristic(characteristic) => characteristic.into(),
       PowoQuery::Geography(geography) => geography.into(),
       PowoQuery::Name(name) => name.into(),

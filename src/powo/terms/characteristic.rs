@@ -4,6 +4,7 @@ use super::PowoQuery;
 pub enum Characteristic {
   Summary,
   Appearance,
+  #[allow(clippy::enum_variant_names)]
   Characteristic,
   Flower,
   Fruit,
@@ -14,9 +15,9 @@ pub enum Characteristic {
   Use,
 }
 
-impl Into<&'static str> for Characteristic {
-  fn into(self) -> &'static str {
-    match self {
+impl From<Characteristic> for &'static str {
+  fn from(val: Characteristic) -> Self {
+    match val {
       Characteristic::Summary => "summary",
       Characteristic::Appearance => "appearance",
       Characteristic::Characteristic => "characteristic",
@@ -31,8 +32,8 @@ impl Into<&'static str> for Characteristic {
   }
 }
 
-impl Into<PowoQuery> for Characteristic {
-  fn into(self) -> PowoQuery {
-    PowoQuery::Characteristic(self)
+impl From<Characteristic> for PowoQuery {
+  fn from(val: Characteristic) -> Self {
+    PowoQuery::Characteristic(val)
   }
 }

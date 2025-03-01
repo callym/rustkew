@@ -3,8 +3,8 @@ use std::{collections::HashMap, time::Duration};
 use serde::de::DeserializeOwned;
 use surf::StatusCode;
 
-pub(crate) const IPNI_URL: &'static str = "https://beta.ipni.org/api/1";
-pub(crate) const POWO_URL: &'static str = "https://powo.science.kew.org/api/2";
+pub(crate) const IPNI_URL: &str = "https://beta.ipni.org/api/1";
+pub(crate) const POWO_URL: &str = "https://powo.science.kew.org/api/2";
 
 pub(crate) fn build_params<K: ToKey>(
   query: &Option<SearchQuery<K>>,
@@ -45,7 +45,7 @@ pub(crate) async fn get<R: DeserializeOwned>(
     }
   };
 
-  Ok(res.body_json().await?)
+  res.body_json().await
 }
 
 pub trait ToKey {

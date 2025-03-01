@@ -1,13 +1,6 @@
-use std::{collections::HashMap, time::Duration};
+use serde::Deserialize;
 
-use serde::{de::DeserializeOwned, Deserialize};
-use surf::{Error, StatusCode};
-
-use crate::{
-  core::{build_params, get, SearchQuery},
-  Api,
-  SearchResponse,
-};
+use crate::core::get;
 
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "kebab-case")]

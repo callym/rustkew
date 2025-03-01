@@ -8,9 +8,9 @@ pub enum Filters {
   Infraspecific,
 }
 
-impl Into<&'static str> for Filters {
-  fn into(self) -> &'static str {
-    match self {
+impl From<Filters> for &'static str {
+  fn from(val: Filters) -> Self {
+    match val {
       Filters::Familial => "f_familial",
       Filters::Infrafamilial => "f_infrafamilial",
       Filters::Generic => "f_generic",

@@ -8,9 +8,9 @@ pub enum Author {
   Surname,
 }
 
-impl Into<&'static str> for Author {
-  fn into(self) -> &'static str {
-    match self {
+impl From<Author> for &'static str {
+  fn from(val: Author) -> Self {
+    match val {
       Author::Forename => "author forename",
       Author::FullName => "author name",
       Author::StandardForm => "author std",
@@ -19,8 +19,8 @@ impl Into<&'static str> for Author {
   }
 }
 
-impl Into<IpniQuery> for Author {
-  fn into(self) -> IpniQuery {
-    IpniQuery::Author(self)
+impl From<Author> for IpniQuery {
+  fn from(val: Author) -> Self {
+    IpniQuery::Author(val)
   }
 }

@@ -11,9 +11,9 @@ pub enum Name {
   Author,
 }
 
-impl Into<&'static str> for Name {
-  fn into(self) -> &'static str {
-    match self {
+impl From<Name> for &'static str {
+  fn from(val: Name) -> Self {
+    match val {
       Name::FullName => "name",
       Name::CommonName => "common name",
       Name::Kingdom => "kingdom",
@@ -25,8 +25,8 @@ impl Into<&'static str> for Name {
   }
 }
 
-impl Into<PowoQuery> for Name {
-  fn into(self) -> PowoQuery {
-    PowoQuery::Name(self)
+impl From<Name> for PowoQuery {
+  fn from(val: Name) -> Self {
+    PowoQuery::Name(val)
   }
 }

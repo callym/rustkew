@@ -15,9 +15,9 @@ pub enum Publication {
   Tl2Number,
 }
 
-impl Into<&'static str> for Publication {
-  fn into(self) -> &'static str {
-    match self {
+impl From<Publication> for &'static str {
+  fn from(val: Publication) -> Self {
+    match val {
       Publication::StandardForm => "publication std",
       Publication::BphNumber => "bph number",
       Publication::Date => "date",
@@ -33,8 +33,8 @@ impl Into<&'static str> for Publication {
   }
 }
 
-impl Into<IpniQuery> for Publication {
-  fn into(self) -> IpniQuery {
-    IpniQuery::Publication(self)
+impl From<Publication> for IpniQuery {
+  fn from(val: Publication) -> Self {
+    IpniQuery::Publication(val)
   }
 }

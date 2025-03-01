@@ -13,9 +13,9 @@ pub enum IpniQuery {
   Publication(Publication),
 }
 
-impl Into<&'static str> for IpniQuery {
-  fn into(self) -> &'static str {
-    match self {
+impl From<IpniQuery> for &'static str {
+  fn from(val: IpniQuery) -> Self {
+    match val {
       IpniQuery::Author(author) => author.into(),
       IpniQuery::Name(name) => name.into(),
       IpniQuery::Publication(publication) => publication.into(),

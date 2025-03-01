@@ -5,16 +5,16 @@ pub enum Geography {
   Distribution,
 }
 
-impl Into<&'static str> for Geography {
-  fn into(self) -> &'static str {
-    match self {
+impl From<Geography> for &'static str {
+  fn from(val: Geography) -> Self {
+    match val {
       Geography::Distribution => "location",
     }
   }
 }
 
-impl Into<PowoQuery> for Geography {
-  fn into(self) -> PowoQuery {
-    PowoQuery::Geography(self)
+impl From<Geography> for PowoQuery {
+  fn from(val: Geography) -> Self {
+    PowoQuery::Geography(val)
   }
 }

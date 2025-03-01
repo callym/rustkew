@@ -30,9 +30,9 @@ pub enum Name {
   Version,
 }
 
-impl Into<&'static str> for Name {
-  fn into(self) -> &'static str {
-    match self {
+impl From<Name> for &'static str {
+  fn from(val: Name) -> Self {
+    match val {
       Name::Added => "added",
       Name::Author => "name author",
       Name::Basionym => "basionym",
@@ -63,8 +63,8 @@ impl Into<&'static str> for Name {
   }
 }
 
-impl Into<IpniQuery> for Name {
-  fn into(self) -> IpniQuery {
-    IpniQuery::Name(self)
+impl From<Name> for IpniQuery {
+  fn from(val: Name) -> Self {
+    IpniQuery::Name(val)
   }
 }

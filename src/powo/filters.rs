@@ -8,9 +8,9 @@ pub enum Filters {
   Infraspecies,
 }
 
-impl Into<&'static str> for Filters {
-  fn into(self) -> &'static str {
-    match self {
+impl From<Filters> for &'static str {
+  fn from(val: Filters) -> Self {
+    match val {
       Filters::Accepted => "accepted_names",
       Filters::HasImages => "has_images",
       Filters::Families => "families_f",

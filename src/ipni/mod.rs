@@ -39,8 +39,9 @@ impl_api!(
 
 impl Ipni {
   pub async fn search(query: String) -> Result<SearchResponse<<Self as Api>::Ok>, Error> {
+    let query = Some(SearchQuery::<<Self as Api>::Query>::String(query));
     let params = build_params(
-      &Some(SearchQuery::<<Self as Api>::Query>::String(query)),
+      &query,
       &None::<Vec<String>>,
       "*",
     );
