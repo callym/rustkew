@@ -181,6 +181,10 @@ pub struct PowoLookup {
   pub taxonomic_status: String,
   pub kingdom: String,
   pub phylum: String,
+  #[serde(rename = "clazz")]
+  pub class: String,
+  pub subclass: String,
+  pub order: String,
   pub family: String,
   #[serde(rename = "nomenclaturalCode")]
   pub nomenclatural_code: String,
@@ -191,6 +195,9 @@ pub struct PowoLookup {
   pub taxon_remarks: String,
   #[serde(rename = "nomenclaturalStatus")]
   pub nomenclatural_status: String,
+  pub lifeform: String,
+  pub climate: String,
+  pub hybrid: bool,
   pub synonym: bool,
   pub plantae: bool,
   pub fungi: bool,
