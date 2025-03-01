@@ -63,7 +63,7 @@ pub mod ipni;
 pub mod powo;
 
 use serde::{de::DeserializeOwned, Deserialize};
-use surf::Error;
+pub use surf::Error;
 
 #[async_trait::async_trait]
 pub trait Api {
