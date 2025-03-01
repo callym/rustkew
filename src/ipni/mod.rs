@@ -64,27 +64,27 @@ impl Ipni {
   }
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Clone)]
 pub struct Citation {
   pub name: String,
   pub id: String,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Clone)]
 pub struct Author {
   pub id: String,
   #[serde(rename = "standardForm")]
   pub standard_form: String,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Clone)]
 #[serde(tag = "recordType")]
 pub struct Publication {
   pub id: String,
   pub title: String,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Clone)]
 #[serde(tag = "recordType")]
 pub enum IpniResult {
   #[serde(rename = "citation")]

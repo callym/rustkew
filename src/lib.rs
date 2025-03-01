@@ -68,7 +68,7 @@ pub use surf::Error;
 #[async_trait::async_trait]
 pub trait Api {
   const URL: &'static str;
-  type Ok: DeserializeOwned;
+  type Ok: DeserializeOwned + Clone;
   type Query;
   type Filters;
 
@@ -80,7 +80,7 @@ pub trait Api {
 }
 
 #[derive(Debug, Deserialize)]
-pub struct SearchResponse<R> {
+pub struct SearchResponse<R: Clone> {
   #[serde(rename = "totalResults")]
   total_results: Option<i32>,
   #[serde(default = "crate::default_cursor")]
@@ -89,7 +89,7 @@ pub struct SearchResponse<R> {
   results: Vec<R>,
 }
 
-impl<R> SearchResponse<R> {
+impl<R: Clone> SearchResponse<R> {
   pub fn cursor(&self) -> &str {
     &self.cursor
   }

@@ -66,14 +66,14 @@ pub struct DistributionMap {
   pub introduced: Vec<Distribution>,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Clone)]
 pub struct Image {
   pub thumbnail: String,
   pub fullsize: String,
   pub caption: String,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct Synonym {
   #[serde(rename = "fqId")]
@@ -85,7 +85,7 @@ pub struct Synonym {
   pub kingdom: Option<String>,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct PowoResult {
   pub accepted: bool,
