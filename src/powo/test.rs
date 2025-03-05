@@ -53,30 +53,66 @@ async fn advanced_geography_search() {
   assert!(res.size() > 0);
 }
 
-#[async_std::test]
-async fn lookup() {
-  let res = Powo::lookup(
-    Urn::from_str("urn:lsid:ipni.org:names:320035-2").unwrap(),
-    None,
-  )
-  .await
-  .unwrap();
+#[cfg(test)]
+mod poa {
+  use super::*;
 
-  assert_eq!(res.name, "Poa annua");
+  #[async_std::test]
+  async fn lookup() {
+    let res = Powo::lookup(
+      Urn::from_str("urn:lsid:ipni.org:names:320035-2").unwrap(),
+      None,
+    )
+    .await
+    .unwrap();
+
+    assert_eq!(res.name, "Poa annua");
+  }
+
+  #[async_std::test]
+  async fn lookup_with_extra_fields() {
+    let res = Powo::lookup(
+      Urn::from_str("urn:lsid:ipni.org:names:320035-2").unwrap(),
+      Some(vec!["distribution".into(), "descriptions".into()]),
+    )
+    .await
+    .unwrap();
+
+    assert_eq!(res.name, "Poa annua");
+    assert_eq!(res.distribution.unwrap().natives[0].name, "Afghanistan");
+    assert!(res.descriptions.is_some());
+  }
 }
 
-#[async_std::test]
-async fn lookup_with_extra_fields() {
-  let res = Powo::lookup(
-    Urn::from_str("urn:lsid:ipni.org:names:320035-2").unwrap(),
-    Some(vec!["distribution".into(), "descriptions".into()]),
-  )
-  .await
-  .unwrap();
+#[cfg(test)]
+mod phalaenopsis {
+  use super::*;
 
-  assert_eq!(res.name, "Poa annua");
-  assert_eq!(res.distribution.unwrap().natives[0].name, "Afghanistan");
-  assert!(res.descriptions.is_some());
+  #[async_std::test]
+  async fn lookup() {
+    let res = Powo::lookup(
+      Urn::from_str("urn:lsid:ipni.org:names:650591-1").unwrap(),
+      None,
+    )
+    .await
+    .unwrap();
+
+    assert_eq!(res.name, "Phalaenopsis schilleriana");
+  }
+
+  #[async_std::test]
+  async fn lookup_with_extra_fields() {
+    let res = Powo::lookup(
+      Urn::from_str("urn:lsid:ipni.org:names:650591-1").unwrap(),
+      Some(vec!["distribution".into(), "descriptions".into()]),
+    )
+    .await
+    .unwrap();
+
+    assert_eq!(res.name, "Phalaenopsis schilleriana");
+    assert_eq!(res.distribution.unwrap().natives[0].name, "Philippines");
+    assert!(res.descriptions.is_some());
+  }
 }
 
 #[async_std::test]

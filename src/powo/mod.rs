@@ -66,7 +66,7 @@ pub struct Distribution {
 #[derive(Debug, Deserialize)]
 pub struct DistributionMap {
   pub natives: Vec<Distribution>,
-  pub introduced: Vec<Distribution>,
+  pub introduced: Option<Vec<Distribution>>,
 }
 
 #[derive(Debug, Deserialize, Clone)]
@@ -173,7 +173,7 @@ where
 #[derive(Debug, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct PowoLookup {
-  pub modified: String,
+  pub modified: Option<String>,
   #[serde(rename = "bibliographicCitation")]
   pub bibliographic_citation: String,
   pub genus: String,
@@ -211,8 +211,8 @@ pub struct PowoLookup {
 
   pub classification: Vec<Taxon>,
   #[serde(rename = "basionymOf")]
-  pub basionym_of: Vec<Taxon>,
-  pub synonyms: Vec<Taxon>,
+  pub basionym_of: Option<Vec<Taxon>>,
+  pub synonyms: Option<Vec<Taxon>>,
 
   pub distribution: Option<DistributionMap>,
   #[serde(rename = "distributionEnvelope")]
