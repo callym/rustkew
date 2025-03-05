@@ -58,12 +58,12 @@ impl Powo {
   }
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Clone)]
 pub struct Distribution {
   pub name: String,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Clone)]
 pub struct DistributionMap {
   pub natives: Vec<Distribution>,
   pub introduced: Option<Vec<Distribution>>,
@@ -108,7 +108,7 @@ pub struct PowoResult {
   pub images: Vec<Image>,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct Taxon {
   #[serde(rename = "fqId")]
@@ -120,14 +120,14 @@ pub struct Taxon {
   pub taxonomic_status: String,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct Description {
   pub description: String,
   pub source: Option<String>,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct Descriptions {
   #[serde(rename = "asTaxon")]
@@ -138,7 +138,7 @@ pub struct Descriptions {
   pub descriptions: HashMap<String, Vec<Description>>,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct DistributionEnvelopeEntry {
   #[serde(deserialize_with = "json_float")]
@@ -170,7 +170,7 @@ where
   Ok(f)
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct PowoLookup {
   pub modified: Option<String>,
