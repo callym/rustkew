@@ -1,12 +1,10 @@
-use std::collections::HashMap;
-
 use serde::Deserialize;
-use surf::Error;
 
 use crate::{
-  core::{build_params, get, SearchQuery},
   Api,
+  Error,
   SearchResponse,
+  core::{SearchQuery, build_params, get},
 };
 
 mod filters;
@@ -16,7 +14,7 @@ pub use terms::{IpniQuery, Name};
 
 use self::{
   filters::Filters,
-  suggest::{suggest, SuggestResult},
+  suggest::{SuggestResult, suggest},
 };
 
 #[cfg(test)]
@@ -24,7 +22,7 @@ mod test;
 
 #[derive(Debug, Clone)]
 pub struct Ipni {
-  query: Option<HashMap<IpniQuery, String>>,
+  query: Option<Vec<(IpniQuery, String)>>,
   filters: Option<Vec<Filters>>,
   cursor: Option<String>,
 }

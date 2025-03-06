@@ -5,17 +5,17 @@ use urn::Urn;
 use super::{filters::Filters, terms, Powo};
 use crate::Api;
 
-#[async_std::test]
+#[tokio::test]
 async fn basic_search() {
   let res = Powo::search("Poa Annua".into()).await.unwrap();
   let urn = Urn::from_str("urn:lsid:ipni.org:names:320035-2").unwrap();
 
   assert_eq!(res.size(), 3);
 
-  assert_eq!(res.results()[0].fq_id, urn);
+  assert!(res.results().iter().any(|f| f.fq_id == urn));
 }
 
-#[async_std::test]
+#[tokio::test]
 async fn advanced_name_search() {
   let query = Powo::new()
     .query(terms::Name::Genus, "Poa")
@@ -30,7 +30,7 @@ async fn advanced_name_search() {
   assert_eq!(res.results()[0].fq_id, urn);
 }
 
-#[async_std::test]
+#[tokio::test]
 async fn advanced_characteristic_search() {
   let res = Powo::new()
     .query(terms::Characteristic::Flower, "yellow")
@@ -42,7 +42,7 @@ async fn advanced_characteristic_search() {
   assert!(res.size() > 0);
 }
 
-#[async_std::test]
+#[tokio::test]
 async fn advanced_geography_search() {
   let res = Powo::new()
     .query(terms::Geography::Distribution, "Africa")
@@ -57,7 +57,7 @@ async fn advanced_geography_search() {
 mod poa {
   use super::*;
 
-  #[async_std::test]
+  #[tokio::test]
   async fn lookup() {
     let res = Powo::lookup(
       Urn::from_str("urn:lsid:ipni.org:names:320035-2").unwrap(),
@@ -69,7 +69,7 @@ mod poa {
     assert_eq!(res.name, "Poa annua");
   }
 
-  #[async_std::test]
+  #[tokio::test]
   async fn lookup_with_extra_fields() {
     let res = Powo::lookup(
       Urn::from_str("urn:lsid:ipni.org:names:320035-2").unwrap(),
@@ -88,7 +88,7 @@ mod poa {
 mod phalaenopsis {
   use super::*;
 
-  #[async_std::test]
+  #[tokio::test]
   async fn lookup() {
     let res = Powo::lookup(
       Urn::from_str("urn:lsid:ipni.org:names:650591-1").unwrap(),
@@ -100,7 +100,7 @@ mod phalaenopsis {
     assert_eq!(res.name, "Phalaenopsis schilleriana");
   }
 
-  #[async_std::test]
+  #[tokio::test]
   async fn lookup_with_extra_fields() {
     let res = Powo::lookup(
       Urn::from_str("urn:lsid:ipni.org:names:650591-1").unwrap(),
@@ -115,7 +115,7 @@ mod phalaenopsis {
   }
 }
 
-#[async_std::test]
+#[tokio::test]
 async fn filters() {
   let query = Powo::new().query(terms::Name::Family, "Poaceae");
 

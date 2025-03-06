@@ -1,7 +1,7 @@
-use std::{collections::HashMap, time::Duration};
+use std::time::Duration;
 
+use reqwest::StatusCode;
 use serde::de::DeserializeOwned;
-use surf::StatusCode;
 
 pub(crate) const IPNI_URL: &str = "https://beta.ipni.org/api/1";
 pub(crate) const POWO_URL: &str = "https://powo.science.kew.org/api/2";
@@ -11,16 +11,16 @@ pub(crate) fn build_params<K: ToKey>(
   filters: &Option<Vec<String>>,
   cursor: &str,
 ) -> impl Iterator<Item = (String, String)> {
-  let mut params = HashMap::new();
-  params.insert(String::from("perPage"), String::from("500"));
-  params.insert(String::from("cursor"), cursor.to_string());
+  let mut params = vec![];
+  params.push((String::from("perPage"), String::from("500")));
+  params.push((String::from("cursor"), cursor.to_string()));
 
   if let Some(query) = query {
-    params.insert(String::from("q"), query.format());
+    params.push((String::from("q"), query.format()));
   }
 
   if let Some(filters) = filters {
-    params.insert(String::from("f"), filters.join(","));
+    params.push((String::from("f"), filters.join(",")));
   }
 
   params.into_iter()
@@ -30,38 +30,38 @@ pub(crate) async fn get<R: DeserializeOwned>(
   base_url: &'static str,
   method: impl Into<String>,
   params: impl Iterator<Item = (String, String)>,
-) -> Result<R, surf::Error> {
+) -> Result<R, crate::Error> {
   let url = format!("{}/{}", base_url, method.into());
-  let url = surf::Url::parse_with_params(&url, params)?;
+  let url = reqwest::Url::parse_with_params(&url, params)?;
 
-  let mut res = loop {
-    match surf::get(&url).await {
+  let res = loop {
+    match reqwest::get(url.clone()).await {
       Ok(res) => break res,
-      Err(err) if err.status() == StatusCode::TooManyRequests => {
-        async_std::task::sleep(Duration::from_millis(500)).await;
+      Err(err) if err.status() == Some(StatusCode::TOO_MANY_REQUESTS) => {
+        tokio::time::sleep(Duration::from_millis(500)).await;
         continue;
       },
       Err(err) => Err(err)?,
     }
   };
 
-  res.body_json().await
+  Ok(res.json().await?)
 }
 
-pub trait ToKey {
+pub trait ToKey: Sized {
   fn to_key(&self) -> &'static str;
 }
 
 pub enum SearchQuery<K: ToKey> {
   String(String),
-  Map(HashMap<K, String>),
+  Vec(Vec<(K, String)>),
 }
 
 impl<K: ToKey> SearchQuery<K> {
   pub fn format(&self) -> String {
     match self {
       SearchQuery::String(s) => s.clone(),
-      SearchQuery::Map(map) => map
+      SearchQuery::Vec(vec) => vec
         .iter()
         .map(|(k, v)| format!("{}:{}", k.to_key(), v))
         .collect::<Vec<_>>()

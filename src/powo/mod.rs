@@ -1,8 +1,9 @@
 use std::collections::HashMap;
 
 use serde::{Deserialize, Serialize};
-use surf::Error;
 use urn::Urn;
+
+use crate::Error;
 
 pub type Id = Urn;
 
@@ -23,7 +24,7 @@ mod test;
 
 #[derive(Debug, Clone)]
 pub struct Powo {
-  query: Option<HashMap<PowoQuery, String>>,
+  query: Option<Vec<(PowoQuery, String)>>,
   filters: Option<Vec<Filters>>,
   cursor: Option<String>,
 }
@@ -69,7 +70,7 @@ pub struct DistributionMap {
 pub struct Image {
   pub thumbnail: String,
   pub fullsize: String,
-  pub caption: String,
+  pub caption: Option<String>,
 }
 
 #[derive(Debug, Deserialize, Serialize, Clone)]

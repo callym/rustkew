@@ -33,7 +33,7 @@ pub struct SuggestResult {
   pub suggested_terms: SuggestedTerms,
 }
 
-pub async fn suggest(query: String) -> Result<SuggestResult, surf::Error> {
+pub async fn suggest(query: String) -> Result<SuggestResult, crate::Error> {
   get(
     crate::core::IPNI_URL,
     "suggest",

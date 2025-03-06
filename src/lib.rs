@@ -2,7 +2,6 @@ pub(crate) mod core;
 
 macro_rules! impl_api {
   ($ty:ty, URL: $url:path, Filters: $filters:path, Ok: $ok:path, Query: $query:path) => {
-    #[async_trait::async_trait]
     impl Api for $ty {
       type Filters = $filters;
       type Ok = $ok;
@@ -20,7 +19,7 @@ macro_rules! impl_api {
 
       fn query(mut self, key: impl Into<Self::Query>, value: impl Into<String>) -> Self {
         let mut query = self.query.unwrap_or_default();
-        query.insert(key.into(), value.into());
+        query.push((key.into(), value.into()));
         self.query = Some(query);
 
         self
@@ -41,7 +40,7 @@ macro_rules! impl_api {
       }
 
       async fn run(&self) -> Result<SearchResponse<Self::Ok>, Error> {
-        let query = self.query.clone().map(|q| SearchQuery::Map(q));
+        let query = self.query.clone().map(|q| SearchQuery::Vec(q));
         let filters = self.filters.clone().map(|f| {
           f.into_iter()
             .map(|f| {
@@ -62,10 +61,16 @@ macro_rules! impl_api {
 pub mod ipni;
 pub mod powo;
 
-use serde::{de::DeserializeOwned, Deserialize};
-pub use surf::Error;
+use serde::{Deserialize, de::DeserializeOwned};
 
-#[async_trait::async_trait]
+#[derive(Debug, thiserror::Error)]
+pub enum Error {
+  #[error(transparent)]
+  Reqwest(#[from] reqwest::Error),
+  #[error(transparent)]
+  Url(#[from] url::ParseError),
+}
+
 pub trait Api {
   const URL: &'static str;
   type Ok: DeserializeOwned + Clone;
@@ -76,7 +81,7 @@ pub trait Api {
   fn query(self, key: impl Into<Self::Query>, value: impl Into<String>) -> Self;
   fn filter(self, filter: Self::Filters) -> Self;
   fn cursor(self, cursor: String) -> Self;
-  async fn run(&self) -> Result<SearchResponse<Self::Ok>, Error>;
+  fn run(&self) -> impl Future<Output = Result<SearchResponse<Self::Ok>, Error>>;
 }
 
 #[derive(Debug, Deserialize)]
