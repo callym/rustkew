@@ -1,15 +1,15 @@
 use std::collections::HashMap;
 
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 use surf::Error;
 use urn::Urn;
 
 pub type Id = Urn;
 
 use crate::{
-  core::{build_params, get, SearchQuery},
   Api,
   SearchResponse,
+  core::{SearchQuery, build_params, get},
 };
 
 mod filters;
@@ -39,11 +39,7 @@ impl_api!(
 impl Powo {
   pub async fn search(query: String) -> Result<SearchResponse<<Self as Api>::Ok>, Error> {
     let query = Some(SearchQuery::<<Self as Api>::Query>::String(query));
-    let params = build_params(
-      &query,
-      &None::<Vec<String>>,
-      "*",
-    );
+    let params = build_params(&query, &None::<Vec<String>>, "*");
     get(Self::URL, "search", params).await
   }
 
@@ -58,25 +54,25 @@ impl Powo {
   }
 }
 
-#[derive(Debug, Deserialize, Clone)]
+#[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct Distribution {
   pub name: String,
 }
 
-#[derive(Debug, Deserialize, Clone)]
+#[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct DistributionMap {
   pub natives: Vec<Distribution>,
   pub introduced: Option<Vec<Distribution>>,
 }
 
-#[derive(Debug, Deserialize, Clone)]
+#[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct Image {
   pub thumbnail: String,
   pub fullsize: String,
   pub caption: String,
 }
 
-#[derive(Debug, Deserialize, Clone)]
+#[derive(Debug, Deserialize, Serialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct Synonym {
   #[serde(rename = "fqId")]
@@ -88,7 +84,7 @@ pub struct Synonym {
   pub kingdom: Option<String>,
 }
 
-#[derive(Debug, Deserialize, Clone)]
+#[derive(Debug, Deserialize, Serialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct PowoResult {
   pub accepted: bool,
@@ -108,7 +104,7 @@ pub struct PowoResult {
   pub images: Vec<Image>,
 }
 
-#[derive(Debug, Deserialize, Clone)]
+#[derive(Debug, Deserialize, Serialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct Taxon {
   #[serde(rename = "fqId")]
@@ -120,14 +116,14 @@ pub struct Taxon {
   pub taxonomic_status: String,
 }
 
-#[derive(Debug, Deserialize, Clone)]
+#[derive(Debug, Deserialize, Serialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct Description {
   pub description: String,
   pub source: Option<String>,
 }
 
-#[derive(Debug, Deserialize, Clone)]
+#[derive(Debug, Deserialize, Serialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct Descriptions {
   #[serde(rename = "asTaxon")]
@@ -138,7 +134,7 @@ pub struct Descriptions {
   pub descriptions: HashMap<String, Vec<Description>>,
 }
 
-#[derive(Debug, Deserialize, Clone)]
+#[derive(Debug, Deserialize, Serialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct DistributionEnvelopeEntry {
   #[serde(deserialize_with = "json_float")]
@@ -170,7 +166,7 @@ where
   Ok(f)
 }
 
-#[derive(Debug, Deserialize, Clone)]
+#[derive(Debug, Deserialize, Serialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct PowoLookup {
   pub modified: Option<String>,
