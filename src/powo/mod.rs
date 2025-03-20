@@ -76,7 +76,7 @@ pub struct Image {
 #[derive(Debug, Deserialize, Serialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct Synonym {
-  #[serde(rename = "fqId")]
+  #[serde(rename(deserialize = "fqId"))]
   pub fq_id: Urn,
   pub url: String,
   pub name: String,
@@ -95,10 +95,10 @@ pub struct PowoResult {
   pub name: String,
   pub rank: String,
   pub snippet: Option<String>,
-  #[serde(rename = "synonymOf")]
+  #[serde(rename(deserialize = "synonymOf"))]
   pub synonym_of: Option<Synonym>,
   pub url: String,
-  #[serde(rename = "fqId")]
+  #[serde(rename(deserialize = "fqId"))]
   pub fq_id: Urn,
 
   #[serde(default)]
@@ -108,12 +108,12 @@ pub struct PowoResult {
 #[derive(Debug, Deserialize, Serialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct Taxon {
-  #[serde(rename = "fqId")]
+  #[serde(rename(deserialize = "fqId"))]
   pub fq_id: Urn,
   pub name: String,
   pub author: String,
   pub rank: String,
-  #[serde(rename = "taxonomicStatus")]
+  #[serde(rename(deserialize = "taxonomicStatus"))]
   pub taxonomic_status: String,
 }
 
@@ -127,10 +127,10 @@ pub struct Description {
 #[derive(Debug, Deserialize, Serialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct Descriptions {
-  #[serde(rename = "asTaxon")]
+  #[serde(rename(deserialize = "asTaxon"))]
   pub as_taxon: String,
   pub source: String,
-  #[serde(rename = "fromSynonym")]
+  #[serde(rename(deserialize = "fromSynonym"))]
   pub from_synonym: bool,
   pub descriptions: HashMap<String, Vec<Description>>,
 }
@@ -171,26 +171,26 @@ where
 #[serde(deny_unknown_fields)]
 pub struct PowoLookup {
   pub modified: Option<String>,
-  #[serde(rename = "bibliographicCitation")]
+  #[serde(rename(deserialize = "bibliographicCitation"))]
   pub bibliographic_citation: String,
   pub genus: String,
-  #[serde(rename = "taxonomicStatus")]
+  #[serde(rename(deserialize = "taxonomicStatus"))]
   pub taxonomic_status: String,
   pub kingdom: String,
   pub phylum: String,
-  #[serde(rename = "clazz")]
+  #[serde(rename(deserialize = "clazz"))]
   pub class: String,
   pub subclass: String,
   pub order: String,
   pub family: String,
-  #[serde(rename = "nomenclaturalCode")]
+  #[serde(rename(deserialize = "nomenclaturalCode"))]
   pub nomenclatural_code: String,
   pub source: String,
-  #[serde(rename = "namePublishedInYear")]
+  #[serde(rename(deserialize = "namePublishedInYear"))]
   pub name_published_in_year: u32,
-  #[serde(rename = "taxonRemarks")]
+  #[serde(rename(deserialize = "taxonRemarks"))]
   pub taxon_remarks: String,
-  #[serde(rename = "nomenclaturalStatus")]
+  #[serde(rename(deserialize = "nomenclaturalStatus"))]
   pub nomenclatural_status: String,
   pub lifeform: String,
   pub climate: String,
@@ -198,7 +198,7 @@ pub struct PowoLookup {
   pub synonym: bool,
   pub plantae: bool,
   pub fungi: bool,
-  #[serde(rename = "fqId")]
+  #[serde(rename(deserialize = "fqId"))]
   pub fq_id: Urn,
   pub name: String,
   pub authors: String,
@@ -207,12 +207,12 @@ pub struct PowoLookup {
   pub reference: String,
 
   pub classification: Vec<Taxon>,
-  #[serde(rename = "basionymOf")]
+  #[serde(rename(deserialize = "basionymOf"))]
   pub basionym_of: Option<Vec<Taxon>>,
   pub synonyms: Option<Vec<Taxon>>,
 
   pub distribution: Option<DistributionMap>,
-  #[serde(rename = "distributionEnvelope")]
+  #[serde(rename(deserialize = "distributionEnvelope"))]
   pub distribution_envelope: Option<Vec<DistributionEnvelopeEntry>>,
   pub descriptions: Option<HashMap<String, Descriptions>>,
 

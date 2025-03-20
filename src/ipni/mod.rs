@@ -70,7 +70,7 @@ pub struct Citation {
 #[derive(Debug, Deserialize, Clone)]
 pub struct Author {
   pub id: String,
-  #[serde(rename = "standardForm")]
+  #[serde(rename(deserialize = "standardForm"))]
   pub standard_form: String,
 }
 
@@ -84,10 +84,10 @@ pub struct Publication {
 #[derive(Debug, Deserialize, Clone)]
 #[serde(tag = "recordType")]
 pub enum IpniResult {
-  #[serde(rename = "citation")]
+  #[serde(rename(deserialize = "citation"))]
   Citation(Citation),
-  #[serde(rename = "author")]
+  #[serde(rename(deserialize = "author"))]
   Author(Author),
-  #[serde(rename = "publication")]
+  #[serde(rename(deserialize = "publication"))]
   Publication(Publication),
 }

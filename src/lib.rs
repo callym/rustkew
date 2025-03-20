@@ -86,7 +86,7 @@ pub trait Api {
 
 #[derive(Debug, Deserialize)]
 pub struct SearchResponse<R: Clone> {
-  #[serde(rename = "totalResults")]
+  #[serde(rename(deserialize = "totalResults"))]
   total_results: Option<i32>,
   #[serde(default = "crate::default_cursor")]
   cursor: String,
