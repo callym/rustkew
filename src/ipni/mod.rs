@@ -10,12 +10,10 @@ use crate::{
 mod filters;
 mod suggest;
 mod terms;
+pub use suggest::{SuggestResult, SuggestedTerms, Suggestion, Suggestions};
 pub use terms::{IpniQuery, Name};
 
-use self::{
-  filters::Filters,
-  suggest::{SuggestResult, suggest},
-};
+use self::{filters::Filters, suggest::suggest};
 
 #[cfg(test)]
 mod test;

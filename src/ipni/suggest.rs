@@ -1,8 +1,8 @@
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
 use crate::core::get;
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize, Clone)]
 #[serde(rename_all = "kebab-case")]
 pub struct Suggestion {
   pub term: String,
@@ -10,7 +10,7 @@ pub struct Suggestion {
   pub payload: String,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize, Clone)]
 #[serde(rename_all = "kebab-case")]
 pub struct Suggestions {
   pub scientific_name: Vec<Suggestion>,
@@ -18,7 +18,7 @@ pub struct Suggestions {
   pub publication: Vec<Suggestion>,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize, Clone)]
 #[serde(rename_all = "kebab-case")]
 pub struct SuggestedTerms {
   pub scientific_name: Vec<String>,
@@ -26,7 +26,7 @@ pub struct SuggestedTerms {
   pub publication: Vec<String>,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize, Clone)]
 #[serde(rename_all = "camelCase")]
 pub struct SuggestResult {
   pub suggestions: Suggestions,
