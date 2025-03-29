@@ -211,6 +211,7 @@ pub struct PowoLookup {
   pub classification: Vec<Taxon>,
   #[serde(rename(deserialize = "basionymOf"))]
   pub basionym_of: Option<Vec<Taxon>>,
+  pub basionym: Option<Taxon>,
   pub synonyms: Option<Vec<Taxon>>,
 
   pub distribution: Option<DistributionMap>,
