@@ -101,6 +101,18 @@ mod phalaenopsis {
   }
 
   #[tokio::test]
+  async fn lookup_2() {
+    let res = Powo::lookup(
+      Urn::from_str("urn:lsid:ipni.org:names:77170908-1").unwrap(),
+      None,
+    )
+    .await
+    .unwrap();
+
+    assert_eq!(res.name, "Philodendron hederaceum var. hederaceum");
+  }
+
+  #[tokio::test]
   async fn lookup_with_extra_fields() {
     let res = Powo::lookup(
       Urn::from_str("urn:lsid:ipni.org:names:650591-1").unwrap(),

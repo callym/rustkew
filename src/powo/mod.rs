@@ -187,7 +187,7 @@ pub struct PowoLookup {
   pub nomenclatural_code: String,
   pub source: String,
   #[serde(rename(deserialize = "namePublishedInYear"))]
-  pub name_published_in_year: u32,
+  pub name_published_in_year: Option<u32>,
   #[serde(rename(deserialize = "taxonRemarks"))]
   pub taxon_remarks: Option<String>,
   #[serde(rename(deserialize = "nomenclaturalStatus"))]
@@ -204,11 +204,11 @@ pub struct PowoLookup {
   #[serde(rename(deserialize = "fqId"))]
   pub fq_id: Urn,
   pub name: String,
-  pub authors: String,
+  pub authors: Option<String>,
   pub species: String,
   pub infraspecies: Option<String>,
   pub rank: String,
-  pub reference: String,
+  pub reference: Option<String>,
 
   pub classification: Vec<Taxon>,
   #[serde(rename(deserialize = "basionymOf"))]
