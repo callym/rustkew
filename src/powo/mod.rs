@@ -195,6 +195,7 @@ pub struct PowoLookup {
   pub lifeform: String,
   pub climate: String,
   pub hybrid: bool,
+  pub accepted: Option<Taxon>,
   #[serde(rename(deserialize = "paftolId"))]
   pub paftol_id: Option<String>,
   pub synonym: bool,
