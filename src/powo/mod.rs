@@ -206,6 +206,7 @@ pub struct PowoLookup {
   pub name: String,
   pub authors: String,
   pub species: String,
+  pub infraspecies: Option<String>,
   pub rank: String,
   pub reference: String,
 
